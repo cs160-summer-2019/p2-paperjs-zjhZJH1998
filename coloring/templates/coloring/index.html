@@ -18,7 +18,6 @@
 			position: absolute;
 			top: 0;
 		}
-
 		.swatch {
 			width: 24px;
 			height: 24px;
@@ -27,7 +26,6 @@
 			border-radius: 12px;
 			margin: 3px;
 		}
-
 		#myCanvas {
 			padding-left: 0;
 		    padding-right: 0;
@@ -40,52 +38,68 @@
 	<script type="text/javascript" canvas="canvas">
 		window.onload = function() {
 			var canvas = document.getElementById('myCanvas');
-
 			// coloring page
 			var mandala = {
 				item: null,
 				lastClicked: null,
 				filePath: '/static/coloring/images/mandala-freepik.svg'
 			};	
-
 			// color palette
 			var cp = {
 				history: ["#000000"], // black selected by default
 				options: [],
 				$container: $('#color-palette')
 			}
-
 			// your rectangle gradient interaction goes in this function
 			// you may also add code outside of the function (e.g., global variables)
 			function myGradientInteraction(){
 				var tool = new paper.Tool();
-
-				tool.onMouseDown = function (event) {
-
+        var sam=document.getElementById("myCanvas");
+        var x1;
+        var y1;
+        var x2;
+        var y2;
+				tool.onMouseDown = function (e) {
+          e=event||window.event;
+          x1=e.clientX;
+          y1=e.clientY;  
+          
 				}
-
-				tool.onMouseUp = function (event) {
+				tool.onMouseUp = function (e) {
+           e=event||window.event;
+          x2=e.clientX;
+          y2=e.clientY;
+          var ctx=sam.getContext("2d");
+          var grd=ctx.createLinearGradient(x1,y1,x2,y2);
+          grd.addColorStop(0,cp.history[cp.history.length - 2]);
+          grd.addColorStop(1,cp.history[cp.history.length - 1]);
+          ctx.fillStyle=grd;
+          ctx.fillRect(x1,y1,x2,y2);
 					
 				}
 			}
-
 			// your custom interaction goes here!
 			// you may replace everything
 			function myCustomInteraction() {
-				var tool = new paper.Tool();
+        
+      
+          
 
-				tool.onMouseDown = function (event) {
-				    var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
-				    if (hit) {
-				        hit.item.fillColor = cp.history[cp.history.length - 1];
-				    }
-				}
-			}
-
-
+     var tool = new paper.Tool();
+        
+    tool.onMouseDown = function (event) {
+          var c=document.getElementById("myCanvas");
+          var ctx=c.getContext("2d");
+          ctx.fillStyle="#FF0000";
+          ctx.fillRect(100,100,200,200);
+//         var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
+//         if (hit) {
+//             hit.item.fillColor = cp.history[cp.history.length - 1];
+//         }
+    }
+   }
 			// create a color palette with the given colors
 			function createColorPalette(colors){
-
 				// create a swatch for each color
 				for (var i = colors.length - 1; i >= 0; i--) {
 					var $swatch = $("<div>").css("background-color", colors[i])
@@ -97,7 +111,6 @@
 					cp.$container.append($swatch);
 				}
 			}
-
 			// loads a set of colors from a json to create a color palette
 			function getColorsCreatePalette(){
 				cp.$container.html(" ");
@@ -109,15 +122,12 @@
 					createColorPalette(cp.options);
 				});
 			}
-
 			function init(custom){
 				paper.setup(canvas);
 				getColorsCreatePalette();
-
 				paper.project.importSVG(mandala.filePath, function(item) { 
 					mandala.item = item._children["design-freepik"];
 				    paper.project.insertLayer(0,mandala.item);
-
 				    if (custom) {
 				    	myCustomInteraction();	
 				    } else {
@@ -126,7 +136,6 @@
 					
 				}); 
 			}
-
 			// To see your myGradientInteraction version visit: 
 			// http://<your url>:8000/coloring/?type=gradient
 			// To see your myCustomInteraction version visit: 
@@ -146,3 +155,4 @@
 	<div id="color-palette"></div>
 </body>
 </html>
+© 2019 GitHub, Inc.
