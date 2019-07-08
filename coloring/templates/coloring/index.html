@@ -60,21 +60,21 @@
         var x2;
         var y2;
 				tool.onMouseDown = function (e) {
-          e=event||window.event;
-          x1=e.clientX;
-          y1=e.clientY;  
-          
+         
+          x1=e.point.x;
+          y1=e.point.y;  
 				}
 				tool.onMouseUp = function (e) {
-           e=event||window.event;
-          x2=e.clientX;
-          y2=e.clientY;
+          
+          x2=e.point.x;
+          y2=e.point.y;
+//           document.body.innerText=x1+y1+';'+x2+y2;
           var ctx=sam.getContext("2d");
           var grd=ctx.createLinearGradient(x1,y1,x2,y2);
           grd.addColorStop(0,cp.history[cp.history.length - 2]);
           grd.addColorStop(1,cp.history[cp.history.length - 1]);
           ctx.fillStyle=grd;
-          ctx.fillRect(x1,y1,x2,y2);
+          ctx.fillRect(x1,y1,x2-x1,y2-y1);
 					
 				}
 			}
