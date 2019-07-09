@@ -38,6 +38,9 @@
 	<script type="text/javascript" canvas="canvas">
 		window.onload = function() {
 			var canvas = document.getElementById('myCanvas');
+      var CTX=canvas.getContext("2d");
+      CTX.fillStyle="#FF0000";
+      CTX.fillRect(100,100,200,200);
 			// coloring page
 			var mandala = {
 				item: null,
@@ -55,12 +58,24 @@
 			function myGradientInteraction(){
 				var tool = new paper.Tool();
         var sam=document.getElementById("myCanvas");
+//        var ctx=sam.getContext("2d");
         var x1;
         var y1;
         var x2;
         var y2;
-				tool.onMouseDown = function (e) {
-         
+        var index=1;
+        tool.onMouseMove=function(e){
+          if(index==1){
+          var c=document.getElementById("myCanvas");
+          var ctx=c.getContext("2d");
+          ctx.fillStyle="#FF0000";
+          ctx.fillRect(100,100,200,200);
+            index++;
+          }else{
+            
+          }
+        }
+				tool.onMouseDown = function (e){
           x1=e.point.x;
           y1=e.point.y;  
 				}
@@ -69,12 +84,12 @@
           x2=e.point.x;
           y2=e.point.y;
 //           document.body.innerText=x1+y1+';'+x2+y2;
-          var ctx=sam.getContext("2d");
+         var ctx=sam.getContext("2d");
           var grd=ctx.createLinearGradient(x1,y1,x2,y2);
           grd.addColorStop(0,cp.history[cp.history.length - 2]);
           grd.addColorStop(1,cp.history[cp.history.length - 1]);
           ctx.fillStyle=grd;
-          ctx.fillRect(x1,y1,x2-x1,y2-y1);
+          ctx.fillRect(100,100,200,200);
 					
 				}
 			}
@@ -84,7 +99,6 @@
         
       
           
-
      var tool = new paper.Tool();
         
     tool.onMouseDown = function (event) {
@@ -131,6 +145,7 @@
 				    if (custom) {
 				    	myCustomInteraction();	
 				    } else {
+              
 				    	myGradientInteraction();
 				    }		
 					
