@@ -53,6 +53,36 @@
 				options: [],
 				$container: $('#color-palette')
 			}
+      var snapth=0;
+      var file={
+        shot:[]
+      }
+      function newsnap(Item,Style){
+        this.Item=Item;
+        this.Style=Style;
+      }
+      var snapshot=new newsnap(new Array(),new Array());
+      //snapshot btn function
+      $('#snapshotBtn').click(function(){
+        
+        snapth=snapth+1;
+        file.shot.push(snapshot);
+        snapshot=new newsnap(new Array(),new Array());
+       
+        var MyDiv=document.getElementById("ddd");
+        var bt=document.createElement("button");
+        bt.innerHTML=snapth;
+        bt.onclick=function(){
+          var num=bt.innerHTML-1;
+         for(i=0;i<file.shot[num].Item.length;i++){
+           file.shot[num].Item[i].fillColor=file.shot[num].Style[i];
+         }
+         
+        }; 
+        $('#ddd').append(bt);
+      
+      });
+      
 			// your rectangle gradient interaction goes in this function
 			// you may also add code outside of the function (e.g., global variables)
 			function myGradientInteraction(){
@@ -100,16 +130,24 @@
       
           
      var tool = new paper.Tool();
-        
+      
+        for(i=0;i<mandala.item.length;i++){
+        alert(mandala.item[i]);alert("yes");
+      }  
     tool.onMouseDown = function (event) {
-          var c=document.getElementById("myCanvas");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle="#FF0000";
-          ctx.fillRect(100,100,200,200);
-//         var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
-//         if (hit) {
-//             hit.item.fillColor = cp.history[cp.history.length - 1];
-//         }
+     
+        var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
+        if (hit) {
+            hit.item.fillColor = cp.history[cp.history.length - 1];
+//           alert(cp.history[cp.history.length - 1]);
+          
+           snapshot.Item.push(hit.item);
+         
+//           alert(snapshot.Item[snapshot.Item.length-1]);
+          snapshot.Style.push(cp.history[cp.history.length - 1]);
+//           alert(snapshot.Style[snapshot.Style.length-1])
+          
+        }
     }
    }
 			// create a color palette with the given colors
@@ -143,10 +181,10 @@
 					mandala.item = item._children["design-freepik"];
 				    paper.project.insertLayer(0,mandala.item);
 				    if (custom) {
-				    	myCustomInteraction();	
-				    } else {
-              
 				    	myGradientInteraction();
+				    } else {
+              myCustomInteraction();
+				    	
 				    }		
 					
 				}); 
@@ -167,7 +205,13 @@
 <body>	
 
 	<canvas id="myCanvas" width="750px" height="750px"></canvas>
+  
 	<div id="color-palette"></div>
+  <div id="ddd">
+    <button id="snapshotBtn">
+    snapshot
+  </button>
+  </div>
 </body>
 </html>
 © 2019 GitHub, Inc.
