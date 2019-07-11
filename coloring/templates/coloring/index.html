@@ -131,8 +131,13 @@
           
      var tool = new paper.Tool();
       
-        for(i=0;i<mandala.item.length;i++){
-        alert(mandala.item[i]);alert("yes");
+//         alert(mandala.item.children);
+        for(i=0;i<mandala.item.children.length;i++){
+//         alert(mandala.item.children[i].fillColor);
+          snapshot.Item.push(mandala.item.children[i]);
+          snapshot.Style.push(mandala.item.children[i].fillColor)
+          
+          
       }  
     tool.onMouseDown = function (event) {
      
@@ -141,11 +146,21 @@
             hit.item.fillColor = cp.history[cp.history.length - 1];
 //           alert(cp.history[cp.history.length - 1]);
           
-           snapshot.Item.push(hit.item);
+//            snapshot.Item.push(hit.item);
          
 //           alert(snapshot.Item[snapshot.Item.length-1]);
-          snapshot.Style.push(cp.history[cp.history.length - 1]);
-//           alert(snapshot.Style[snapshot.Style.length-1])
+
+          //           snapshot.Style.push(cp.history[cp.history.length - 1]);
+
+          //           alert(snapshot.Style[snapshot.Style.length-1])
+//           snapshot.Style.push(hit.item.fillColor);
+          
+          var a=snapshot.Item.indexOf(hit.item);
+          snapshot.Style[a]=hit.item.fillColor;
+          
+          
+          
+          
           
         }
     }
