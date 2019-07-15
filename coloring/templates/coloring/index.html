@@ -5,14 +5,14 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<title>P3 Coloring</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'coloring/vendors/hammer/hammer.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'coloring/vendors/hammer/jquery.hammer.js' %}"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+ 
 
 
 	<style type="text/css">
@@ -25,6 +25,10 @@
 			top: 0;
 		}
     
+    #input-group, #mb-3, #form-control {
+      width: 100px;
+    }
+    
     #c-palette {
 			width: 65px;
 			background-color: #f1f1f1;
@@ -34,14 +38,34 @@
 			top: 0;
 		}
     
-    #expand {
-      margin-top: 65px;
-      margin-left: 19px;
-    }
+   .btn, .btn:active,.btn:visited {
+    background-color:#115DA8;
+    border: none; 
+    color: #ffffff; /* White text */
+    padding: 10px 10px; /* Some padding */
+    font-size: 16px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
     
+  }
+    
+    
+    #expand {
+      position: absolute;
+      top: 65px;
+      right: 30px;
+    }
+    #thetitle{
+   background:linear-gradient(to right, red, orange, yellow, green, blue, purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+    }
     #done {
-      margin-top: 305px;
-      margin-left: 7px;
+
+      position: absolute;
+      top: 300px;
+      right: 20px;
+      font-size: 14px;
     }
     
 		.swatch {
@@ -53,35 +77,30 @@
 			margin: 3px;
       border : 0px;
 		}
+    
 		#myCanvas {
-			padding-left: 0;
-		    padding-right: 0;
-		    margin-left: auto;
-		    margin-right: auto;
+
 		    display: block;
       position:absolute;
-      top:0px;
-      left:0px;
+      top:40px;
+      right: 80px;
 		}
-/*     #samCanvas {
-			padding-left: 0;
-		    padding-right: 0;
-		    margin-left: auto;
-		    margin-right: auto;
-		    display: block;
-      position:absolute;
-      top:0px;
-      left:0px;
-		} */
+
+
     
 	</style>
 
 	<script type="text/javascript" canvas="canvas">
+    
+    $(document).ready(function() {
+        $('#my-modal').modal('show');
+        var height = $(window).height() - 200;
+    });
+    
 		window.onload = function() {
 			var canvas = document.getElementById('myCanvas');
       var CTX=canvas.getContext("2d");
-//       CTX.fillStyle="#FF0000";
-//       CTX.fillRect(100,100,200,200);
+
 			// coloring page
 			var mandala = {
 				item: null,
@@ -98,6 +117,7 @@
 				history: ["#000000"], // black selected by default
 				$container: $('#c-palette')
 			}
+
       // full range of colors
 			var cpicker = {
 				history: [], 
@@ -109,21 +129,6 @@
       var file={
         shot:[]
       }
-      
-      //test layer
-//       var size=new Size({
-//         width:10,
-//         height:20
-//       });
-//       var layer2=new Layer({
-//         position:(10,10);
-//       })
-      
-      //sleep
-      function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
-
       
       
       function newsnap(Item,Style){
@@ -138,13 +143,15 @@
         file.shot.push(snapshot);
         snapshot=new newsnap(new Array(),new Array());
         for(i=0;i<mandala.item.children.length;i++){
-//         alert(mandala.item.children[i].fillColor);
           snapshot.Item.push(mandala.item.children[i]);
           snapshot.Style.push(mandala.item.children[i].fillColor)}
         var MyDiv=document.getElementById("ddd");
         var bt=document.createElement("button");
+        
+        
         bt.innerHTML=snapth;
-        alert("yes");
+        
+        
         bt.onclick=function(){
           var num=bt.innerHTML-1;
          for(i=0;i<file.shot[num].Item.length;i++){
@@ -152,22 +159,8 @@
          }
          
         }; 
-//         var div=document.createElement("div");
-//         div.
-       var sam=document.getElementById("myCanvas");
-//         sam.left=100px;
-//         sam.top=100px;
-       paper.project.importSVG(mandalasam.filePath, function(item) { 
-					mandalasam.item = item._children["design-freepik"];
-				    paper.project.insertLayer(0,mandalasam.item);  
-        
-				}); 
-       sleep(5).then(() => {
-         for(i=0;i<mandalasam.item.children.length;i++){
-           mandalasam.item.children[i].fillColor=file.shot[snapth-1].Style[i];
-         }
-         
-})
+
+       
         
         $('#ddd').append(bt);
       
@@ -176,41 +169,18 @@
 			// your rectangle gradient interaction goes in this function
 			// you may also add code outside of the function (e.g., global variables)
 			function myGradientInteraction(){
-				var tool = new paper.Tool();
-        var sam=document.getElementById("myCanvas");
-//        var ctx=sam.getContext("2d");
-        var x1;
-        var y1;
-        var x2;
-        var y2;
-        var index=1;
-        tool.onMouseMove=function(e){
-          if(index==1){
-          var c=document.getElementById("myCanvas");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle="#FF0000";
-          ctx.fillRect(100,100,200,200);
-            index++;
-          }else{
-            
+                var rect = new paper.Path.Rectangle(220,300, 300, 100);
+        rect.fillColor = 'red';
+				
+        var tool = new paper.Tool();
+				tool.onMouseUp = function (event) {
+          rect.fillColor = {
+            gradient : {
+              stops: [cp.history[cp.history.length -2], cp.history[cp.history.length -1]]
+            },
+            origin: event.downPoint,
+            destination: event.point
           }
-        }
-				tool.onMouseDown = function (e){
-          x1=e.point.x;
-          y1=e.point.y;  
-				}
-				tool.onMouseUp = function (e) {
-          
-          x2=e.point.x;
-          y2=e.point.y;
-//           document.body.innerText=x1+y1+';'+x2+y2;
-         var ctx=sam.getContext("2d");
-          var grd=ctx.createLinearGradient(x1,y1,x2,y2);
-          grd.addColorStop(0,cp.history[cp.history.length - 2]);
-          grd.addColorStop(1,cp.history[cp.history.length - 1]);
-          ctx.fillStyle=grd;
-          ctx.fillRect(100,100,200,200);
-					
 				}
 			}
 			// your custom interaction goes here!
@@ -221,9 +191,7 @@
           
      var tool = new paper.Tool();
       
-//         alert(mandala.item.children);
         for(i=0;i<mandala.item.children.length;i++){
-//         alert(mandala.item.children[i].fillColor);
           snapshot.Item.push(mandala.item.children[i]);
           snapshot.Style.push(mandala.item.children[i].fillColor)
           
@@ -237,30 +205,15 @@
           var a=snapshot.Item.indexOf(hit.item);
           snapshot.Style[a]=hit.item.fillColor;
           
-          
-          
-          
-          
         }
     }
    }
       
-   //YJS SECTION
       
-//       function 
 			// loads a set of colors from a json to create a color palette
 			function getColorsCreatePalette(){
         $("#expand").hide();
 				cpicker.$container.html(" ");
-// 				$.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
-// 					var keys = Object.keys(colors);
-// 					for (var i = keys.length-1; i >= 0; i--) {
-// 						cpicker.options.push(colors[keys[i]][500]);
-// 					}
-//           alert(cpicker.options);
-// 					colorPick(cpicker.options);
-// 				});
- 
        colorPick(cpicker.options);
 
 
@@ -276,7 +229,7 @@
       
       function colorPick(colors){
         var count = 0;
-        $("#done").text("choose 4 colors");
+        $("#done").text("choose 4");
         for (var i = colors.length - 1; i >= 0; i--) {
 					var $swatch = $('<div>',{id:'curr'}).css("background-color", colors[i])
 									   .addClass("swatch");
@@ -290,16 +243,14 @@
             }
             if (count == 4) {
               $("#done").text(" ");
-              
               cpicker.$container.empty();
               createColorPalette(cpicker.history);
-            
-            } 
+            }
 					});
 					cpicker.$container.append($swatch);
 				}
       }
-      
+
       			// create a color palette with the given colors
 			function createColorPalette(colors){
         $("#expand").show();
@@ -310,13 +261,14 @@
           cpicker.history = [];
           getColorsCreatePalette();
         });
+        
+        
 				// create a swatch for each color
 				for (var i = colors.length - 1; i >= 0; i--) {
 					var $swatch = $('<div>',{id:'curr'}).css("background-color", colors[i])
 									   .addClass("swatch");
 
 					$swatch.click(function() {
-//           $swatch.hammer().on("tap",function(){
 						// add color to the color palette history
 					  	cp.history.push($(this).css("background-color"));
 					});
@@ -332,9 +284,9 @@
 					mandala.item = item._children["design-freepik"];
 				    paper.project.insertLayer(0,mandala.item);
 				    if (custom) {
-				    	
+				    	 myCustomInteraction();
 				    } else {
-              myCustomInteraction();
+             
 				    	myGradientInteraction();
 				    }		
 					
@@ -353,28 +305,65 @@
 		}
 	</script>
 </head>
-<body>	<div class="row">
+  
+<body>	
+  <div class="modal" id = "my-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id = "thetitle">Interactive Coloring Book</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><b>Start</b> by choosing four colors on your palette</p>
+        <p><b>Change </b> your color palette by tapping the expand button</p>
+                <p><b>Take a snapshot </b> to save your current draft</p>
+                        <p><b>Go back </b> to your old drafts by tapping the numbered buttons</p>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="row">
   <div class="col-md-3">
   <div id="ddd">
-    <button id="snapshotBtn">
-    snapshot
-  </button>
-    <canvas id=""></canvas>
+    
+    <button id = "snapshotBtn"class="btn"><i class="fa fa-camera-retro"></i> snapshot</button>
+
+    
   </div>
   </div>
+   
   <div class="col-md-8">
+    <div class="input-group mb-3 w-50 justify-content-center">
+  <input type="text" class="form-control" placeholder="my title" aria-label="my title" aria-describedby="basic-addon2">
+  <div class="input-group-append">
+    <span class="input-group-text" id="basic-addon2">.jpg</span>
+  </div>
+</div>
+    
     <canvas id="myCanvas" width="750px" height="750px"></canvas>
+    
   </div>
   <div class="col-md-1">
     <div id="color-palette"></div>
     <div id="c-palette"></div>
+
     <div id= "full"></div>
     <span id = "expand" class = "fa-stack fa-xs">
     <i class = "fas fa-circle fa-stack-2x"></i>
     <i class = "fas fa-angle-down fa-stack-1x fa-inverse"></i>
     </span>
-<!--     <button type="button" id = "done-btn" class="btn btn-info">0&#47;4</button> -->
-    <p id = "done" class="text-info">choose 4 colors</p>
+
+    <p id = "done" class="text-info">choose 4</p>
   </div>
 	
  
